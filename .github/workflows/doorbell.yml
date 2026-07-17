@@ -1,0 +1,33 @@
+name: Doorbell
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  opencode-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Run OpenCode
+        uses: anomalyco/opencode/github@latest
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          track_progress: true
+          model: google/gemini-3.1-flash-lite-preview
+          prompt: |
+            Review the changes in this pull request for bugs. Be brief:
+            name the bug, say why it is wrong, and stop.
+
+            Refer to the specific commits in this PR by their short hash when
+            explaining what changed.
