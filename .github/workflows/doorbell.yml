@@ -23,7 +23,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          use_github_token: true
           model: google/gemini-3.1-flash-lite-preview
           prompt: |
             Review the changes in this pull request for bugs. Be brief:
